@@ -21,6 +21,17 @@ public class Graph{
       adjList.add(i, new HashMap<Integer, Edge>());
     }
   }
+  
+  //find first connected node to start dfs at
+  public int selectAConnectedNode(){
+    int startDFSAt;
+    
+    for(startDFSAt=0;startDFSAt<numVertices;startDFSAt++){
+      if(!adjList.get(startDFSAt).isEmpty()) break;
+    }
+    
+    return startDFSAt;
+  }
 
   public int getNumVertices(){
     return numVertices;

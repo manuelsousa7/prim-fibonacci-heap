@@ -43,13 +43,7 @@ public class GraphGenerator{
   }
   
   private static boolean notConnected(Graph graph){
-    int graphSize = graph.getNumVertices();
-    int startDFSAt;
-    
-    //find first connected node to start dfs at
-    for(startDFSAt=0;startDFSAt<graphSize;startDFSAt++){
-      if(!graph.getAdjList().get(startDFSAt).isEmpty()) break;
-    }
+    int startDFSAt = graph.selectAConnectedNode();
     
     HashSet<Integer> visitedNodes = new HashSet<Integer>();
     visitedNodes.add(startDFSAt);
@@ -58,6 +52,7 @@ public class GraphGenerator{
     
     if(visitedNodes.size() == graph.getNumVertices())
       return false;
+    
     return true;
   }
 
