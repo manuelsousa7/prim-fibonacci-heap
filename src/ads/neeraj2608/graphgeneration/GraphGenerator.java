@@ -1,11 +1,10 @@
 package ads.neeraj2608.graphgeneration;
 
-import java.util.HashSet;
+import static ads.neeraj2608.controller.Controller.DEBUG;
 
+import java.util.HashSet;
 import ads.neeraj2608.types.Edge;
 import ads.neeraj2608.types.Graph;
-
-import static ads.neeraj2608.controller.Controller.DEBUG;
 
 public class GraphGenerator{
   
@@ -18,6 +17,9 @@ public class GraphGenerator{
   }
 
   private static Graph createAndPopulateGraph(int numVertices, double density){
+    if(DEBUG)
+      return createTestGraph(numVertices);
+    
     Graph graph = new Graph(numVertices, density);
     
     int i = 0;
@@ -33,7 +35,7 @@ public class GraphGenerator{
       
       if(!graph.getAdjList().get(row).containsKey(column)){ //this edge not yet in graph
         int cost = ((int)(Math.random() * 1000))+1;
-        graph.getAdjList().get(row).put(column, new Edge(row, column, cost, true));
+        graph.getAdjList().get(row).put(column, new Edge(row, column, cost, false));
         if(DEBUG) System.out.println(row+"--->"+column+" : "+cost);
         i++;
       }
@@ -42,6 +44,66 @@ public class GraphGenerator{
     return graph;
   }
   
+  private static Graph createTestGraph(int numVertices){
+    Graph graph = new Graph(numVertices, 0); //density is ignored since we're going to manually add test data
+    
+    /*
+     * 0 -> 1 788
+     * 0 -> 2 974
+     * 0 -> 3 271
+     * 0 -> 4 177
+     * 3 -> 2 126
+     */
+    /*graph.getAdjList().get(0).put(1, new Edge(0, 1, 788, false));
+    graph.getAdjList().get(0).put(2, new Edge(0, 2, 974, false));
+    graph.getAdjList().get(0).put(3, new Edge(0, 3, 271, false));
+    graph.getAdjList().get(0).put(4, new Edge(0, 4, 177, false));
+    graph.getAdjList().get(3).put(2, new Edge(3, 2, 126, false));*/
+    
+    /*
+     * 0 -> 1 669
+     * 1 -> 3 575
+     * 3 -> 2 1
+     * 2 -> 0 993
+     * 2 -> 4 979
+     */
+    /*graph.getAdjList().get(0).put(1, new Edge(0, 1, 669, false));
+    graph.getAdjList().get(1).put(3, new Edge(1, 3, 575, false));
+    graph.getAdjList().get(3).put(2, new Edge(3, 2, 1, false));
+    graph.getAdjList().get(2).put(0, new Edge(2, 0, 993, false));
+    graph.getAdjList().get(2).put(4, new Edge(2, 4, 979, false));*/
+    
+    /*
+     * 0--->1 : 510
+     * 0--->2 : 621
+     * 1--->2 : 369
+     * 1--->4 : 643
+     * 4--->2 : 107
+     * 4--->3 : 535
+     */
+    /*graph.getAdjList().get(0).put(1, new Edge(0, 1, 510, false));
+    graph.getAdjList().get(0).put(2, new Edge(0, 2, 621, false));
+    graph.getAdjList().get(1).put(2, new Edge(1, 2, 369, false));
+    graph.getAdjList().get(1).put(4, new Edge(1, 4, 643, false));
+    graph.getAdjList().get(4).put(2, new Edge(4, 2, 107, false));
+    graph.getAdjList().get(4).put(3, new Edge(4, 3, 535, false));*/
+    
+    /*
+     * 1--->4 : 325
+     * 3--->0 : 751
+     * 3--->2 : 804
+     * 4--->0 : 429
+     * 4--->3 : 484
+     */
+    graph.getAdjList().get(1).put(4, new Edge(1, 4, 325, false));
+    graph.getAdjList().get(3).put(0, new Edge(3, 0, 751, false));
+    graph.getAdjList().get(3).put(2, new Edge(3, 2, 804, false));
+    graph.getAdjList().get(4).put(0, new Edge(4, 0, 429, false));
+    graph.getAdjList().get(4).put(3, new Edge(4, 3, 484, false));
+    
+    return graph;
+  }
+
   private static boolean notConnected(Graph graph){
     int startDFSAt = graph.selectAConnectedNode();
     
@@ -57,7 +119,6 @@ public class GraphGenerator{
   }
 
   private static void runDFSFromNode(Integer startNode, HashSet<Integer> visitedNodes, Graph graph){
-    if(DEBUG) System.out.println(startNode);
     for(Integer i: graph.getAdjList().get(startNode).keySet()){
       if(!visitedNodes.contains(i)){
         visitedNodes.add(i);

@@ -3,18 +3,30 @@ package ads.neeraj2608.controller;
 import java.util.List;
 
 import ads.neeraj2608.graphgeneration.GraphGenerator;
+import ads.neeraj2608.mstgeneration.fheapscheme.FHeapSchemeMSTGenerator;
 import ads.neeraj2608.mstgeneration.simplescheme.SimpleSchemeMSTGenerator;
 import ads.neeraj2608.types.Edge;
 import ads.neeraj2608.types.Graph;
 
 public class Controller{
   
-  public final static boolean DEBUG = true;
+  public final static boolean DEBUG = false;
 
   public static void main(String[] args){
     Graph graph = GraphGenerator.generateGraph(5, 0.5);
     
     List<Edge> finalMST = new SimpleSchemeMSTGenerator().generateMST(graph);
+    
+    printResults(finalMST);
+    
+    finalMST = new FHeapSchemeMSTGenerator().generateMST(graph);
+    
+    /*int totalCost = 0;
+    for(Edge MSTEdge: finalMST){
+      totalCost += MSTEdge.getCost();
+    }
+    
+    System.out.println(totalCost);*/
     
     printResults(finalMST);
   }

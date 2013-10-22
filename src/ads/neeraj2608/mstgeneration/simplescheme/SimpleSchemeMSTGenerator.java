@@ -1,7 +1,6 @@
 package ads.neeraj2608.mstgeneration.simplescheme;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import ads.neeraj2608.mstgeneration.iface.MSTGeneratorInterface;
@@ -18,50 +17,57 @@ public class SimpleSchemeMSTGenerator implements MSTGeneratorInterface{
 
   @Override
   public List<Edge> generateMST(Graph graph){
-    int startDFSAt = graph.selectAConnectedNode();
-    HashSet<Integer> nodesInMST = new HashSet<Integer>();
-    nodesInMST.add(startDFSAt);
+    List<Integer> nodesInMST = new ArrayList<Integer>();
+    int startMSTAt = graph.selectAConnectedNode();
+    nodesInMST.add(startMSTAt);
     
-    List<Edge> feelers = new ArrayList<Edge>();
+    Edge[] feelerEdges = new Edge[graph.getNumVertices()];
+    for(int i=0;i<feelerEdges.length;i++){
+      feelerEdges[i] = new Edge(0, 0, Integer.MAX_VALUE, false);
+    }
+    feelerEdges[startMSTAt] = new Edge(startMSTAt, startMSTAt, 0, true);
+    
     List<Edge> finalMSTEdges = new ArrayList<Edge>();
     
-    buildMSTNodeByNode(graph, startDFSAt, nodesInMST, finalMSTEdges, feelers);
+    buildMSTNodeByNode(graph, startMSTAt, nodesInMST, finalMSTEdges, feelerEdges);
     
     return finalMSTEdges;
   }
 
   public void buildMSTNodeByNode(Graph graph, 
-                                 int startDFSAt,
-                                 HashSet<Integer> nodesInMST,
+                                 int startMSTAt,
+                                 List<Integer> nodesInMST,
                                  List<Edge> finalMSTEdges,
-                                 List<Edge> feelers){
+                                 Edge[] feelerEdges){
     //add the outgoing edges from this node to all the outgoing edges we already have
-    for(Edge feelerEdge: graph.getAdjList().get(startDFSAt).values()){
+    for(Edge feelerEdge: graph.getAdjList().get(startMSTAt).values()){
       if(!nodesInMST.contains(feelerEdge.getFinish())){
-        feelers.add(feelerEdge);
+        if(feelerEdge.getCost() < feelerEdges[feelerEdge.getFinish()].getCost()){
+          feelerEdges[feelerEdge.getFinish()] = feelerEdge;
+        }
       }
     }
     
-    if(feelers.isEmpty())
+    if(nodesInMST.size() == graph.getNumVertices())
       return;
     
     //O(n) traversal through the feeler edges to pick the least one
-    int minCost = 2000; //larger than any possible cost (since max random(1000)+1 = 1000)
-    Edge minEdge = null;
+    int minCost = Integer.MAX_VALUE;
     int minEdgeIndex = -1;
-    for(int i=0;i<feelers.size();i++){
-      if(null != feelers.get(i) && feelers.get(i).getCost() < minCost){
-        minCost = feelers.get(i).getCost();
-        minEdge = feelers.get(i);
+    Edge minEdge = null;
+    for(int i=0;i<feelerEdges.length;i++){
+      if(!feelerEdges[i].isAlreadyInMST() && feelerEdges[i].getCost() < minCost){
+        minCost = feelerEdges[i].getCost();
+        minEdge = feelerEdges[i];
         minEdgeIndex = i;
       }
     }
     
     finalMSTEdges.add(minEdge);
     nodesInMST.add(minEdge.getFinish());
-    feelers.remove(minEdgeIndex);
+    feelerEdges[minEdgeIndex].setAlreadyInMST(true);
     
-    buildMSTNodeByNode(graph, minEdge.getFinish(), nodesInMST, finalMSTEdges, feelers);
+    buildMSTNodeByNode(graph, minEdge.getFinish(), nodesInMST, finalMSTEdges, feelerEdges);
   }
 
 }

@@ -5,14 +5,14 @@ public class Edge{
   private int start;
   private int finish;
   private int cost;
-  private boolean eligible;
+  private boolean alreadyInMST;
   
   public Edge(int start, int finish, int cost, boolean eligible){
     super();
     this.start = start;
     this.finish = finish;
     this.cost = cost;
-    this.eligible = eligible;
+    this.alreadyInMST = eligible;
   }
   
   public int getStart(){
@@ -39,12 +39,12 @@ public class Edge{
     this.cost = cost;
   }
   
-  public boolean isEligible(){
-    return eligible;
+  public boolean isAlreadyInMST(){
+    return alreadyInMST;
   }
   
-  public void setEligible(boolean eligible){
-    this.eligible = eligible;
+  public void setAlreadyInMST(boolean alreadyInMST){
+    this.alreadyInMST = alreadyInMST;
   }
   
 }

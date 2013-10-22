@@ -44,5 +44,9 @@ public class Graph{
   public int getNumEdges(){
     return numEdges;
   }
+
+  public void setAdjList(List<HashMap<Integer, Edge>> adjList){
+    this.adjList = adjList;
+  }
   
 }
