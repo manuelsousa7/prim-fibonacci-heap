@@ -68,8 +68,7 @@ public class FHeap{
     insertChildrenOfNodeIntoRootList(min);
     
     // connect up min's two neighbors so min is out of the root chain
-    min.getRightSibling().setLeftSibling(min.getLeftSibling());
-    min.getLeftSibling().setRightSibling(min.getRightSibling());
+    joinNeighbors(min);
     
     FHeapNode nodeToDelete = new FHeapNode(min.getIndex(), min.getCost(), 0, min.getFromNode(), null, null, null, null);
     size--;
@@ -89,13 +88,11 @@ public class FHeap{
   }
 
   private void updateMin(FHeapNode startNode, FHeapNode currentNode){
-    if(currentNode.getCost() < startNode.getCost())
+    if(currentNode.getCost() < min.getCost())
       min = currentNode;
     
-    if(currentNode.getRightSibling() == startNode)
-      return;
-    
-    updateMin(startNode, currentNode.getRightSibling());
+    if(currentNode.getRightSibling() != startNode)
+      updateMin(startNode, currentNode.getRightSibling());
   }
 
   private void insertChildrenOfNodeIntoRootList(FHeapNode node){
@@ -146,10 +143,9 @@ public class FHeap{
     if(node1.getCost() <= node2.getCost()){
       node2.setParent(node1);
       
-      // link up the siblings of the node that we're about to make a child. this way the root chain stays connected
+      // connect up the neighbors of the node that we're about to make a child. this way the root chain stays connected
       // without passing through the node that we just demoted
-      node2.getLeftSibling().setRightSibling(node2.getRightSibling());
-      node2.getRightSibling().setLeftSibling(node2.getLeftSibling());
+      joinNeighbors(node2);
       
       node1.setDegree(node1.getDegree() + 1);
       
@@ -166,6 +162,11 @@ public class FHeap{
     }
     
     return union(node2, node1); // node2 was < node1; try again
+  }
+
+  public void joinNeighbors(FHeapNode node){
+    node.getLeftSibling().setRightSibling(node.getRightSibling());
+    node.getRightSibling().setLeftSibling(node.getLeftSibling());
   }
   
   public void decreaseKey(FHeapNode node, int newKey, int fromNode){
@@ -188,17 +189,18 @@ public class FHeap{
       FHeapNode parent = node.getParent(); // save this beforehand because the reference to the parent will be nulled out in the insertIntoRootListWithoutUpdatingMin method
       parent.setDegree(parent.getDegree() - 1);
       
-      if(parent.getChild() == node){
-        if(node.getRightSibling() != node) // any other children of this parent must not become unreachable from the parent just because we promoted this node to the root chain
+      if(parent.getChild() == node){ // any other children of this parent must not become unreachable from the parent just because we promoted this node to the root chain
+        if(node.getRightSibling() != node){
           parent.setChild(node.getRightSibling());
-        else // this node had no siblings and hence can be safely promoted and this parent can be rendered childless
+          joinNeighbors(node);
+        }
+        else // this node had no siblings and hence can be safely promoted and the parent can be rendered childless
           parent.setChild(null);
       } else { // the parent's direct child is a sibling of the node we're about to promote. cut all connections between it and the direct child
-        node.getLeftSibling().setRightSibling(node.getRightSibling());
-        node.getRightSibling().setLeftSibling(node.getLeftSibling());
+        joinNeighbors(node);
       }
       
-      insertIntoRootListWithoutUpdatingMin(node);
+      insertIntoRootListWithoutUpdatingMin(node); // don't update min because deleteMin has yet to be called
       node.setMarked(false);
 
       if(parent.isMarked()){

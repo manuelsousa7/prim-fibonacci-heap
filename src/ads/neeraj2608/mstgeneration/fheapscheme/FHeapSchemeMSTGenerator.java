@@ -24,11 +24,15 @@ public class FHeapSchemeMSTGenerator implements MSTGeneratorInterface{
     fHeap = new FHeap();
     List<Edge> generatedMST = new ArrayList<Edge>();
     
+    int startNodeIndex = graph.selectAConnectedNode();
+    
     for(int i=0;i<graph.getNumVertices();i++){
-      fHeap.insert(Integer.MAX_VALUE);
+//      if(i != startNodeIndex)
+        fHeap.insert(Integer.MAX_VALUE);
+      /*else
+        fHeap.insert(0);*/
     }
     
-    int startNodeIndex = graph.selectAConnectedNode();
     fHeap.decreaseKey(fHeap.getNodeList().get(startNodeIndex), 0, startNodeIndex);
     
     while(fHeap.getSize()!=0){

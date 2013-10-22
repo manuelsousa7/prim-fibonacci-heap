@@ -41,6 +41,8 @@ public class GraphGenerator{
       }
     }
     
+    if(DEBUG) System.out.println();
+    
     return graph;
   }
   
@@ -95,11 +97,39 @@ public class GraphGenerator{
      * 4--->0 : 429
      * 4--->3 : 484
      */
-    graph.getAdjList().get(1).put(4, new Edge(1, 4, 325, false));
+    /*graph.getAdjList().get(1).put(4, new Edge(1, 4, 325, false));
     graph.getAdjList().get(3).put(0, new Edge(3, 0, 751, false));
     graph.getAdjList().get(3).put(2, new Edge(3, 2, 804, false));
     graph.getAdjList().get(4).put(0, new Edge(4, 0, 429, false));
-    graph.getAdjList().get(4).put(3, new Edge(4, 3, 484, false));
+    graph.getAdjList().get(4).put(3, new Edge(4, 3, 484, false));*/
+    
+    /*
+     * 0--->1 : 686
+     * 0--->2 : 197
+     * 1--->2 : 941
+     * 1--->4 : 250
+     * 2--->0 : 512
+     * 2--->3 : 991
+     */
+    /*graph.getAdjList().get(0).put(1, new Edge(0, 1, 686, false));
+    graph.getAdjList().get(0).put(2, new Edge(0, 2, 197, false));
+    graph.getAdjList().get(1).put(2, new Edge(1, 2, 941, false));
+    graph.getAdjList().get(1).put(4, new Edge(1, 4, 250, false));
+    graph.getAdjList().get(2).put(0, new Edge(2, 0, 512, false));
+    graph.getAdjList().get(2).put(3, new Edge(2, 3, 991, false));*/
+    
+    /*
+     * 1--->3 : 580
+     * 2--->0 : 909
+     * 2--->1 : 515
+     * 2--->4 : 776
+     * 3--->2 : 411
+     */
+    graph.getAdjList().get(1).put(3, new Edge(1, 3, 580, false));
+    graph.getAdjList().get(2).put(0, new Edge(2, 0, 909, false));
+    graph.getAdjList().get(2).put(1, new Edge(2, 1, 515, false));
+    graph.getAdjList().get(2).put(4, new Edge(2, 4, 776, false));
+    graph.getAdjList().get(3).put(2, new Edge(3, 2, 411, false));
     
     return graph;
   }

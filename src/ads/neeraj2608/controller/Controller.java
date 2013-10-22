@@ -13,7 +13,11 @@ public class Controller{
   public final static boolean DEBUG = false;
 
   public static void main(String[] args){
-    Graph graph = GraphGenerator.generateGraph(5, 0.5);
+    int numVertices = 50;
+    double density = 0.5;
+    Graph graph = GraphGenerator.generateGraph(numVertices, density);
+    
+    printGraphMetrics(graph, density);
     
     List<Edge> finalMST = new SimpleSchemeMSTGenerator().generateMST(graph);
     
@@ -21,14 +25,13 @@ public class Controller{
     
     finalMST = new FHeapSchemeMSTGenerator().generateMST(graph);
     
-    /*int totalCost = 0;
-    for(Edge MSTEdge: finalMST){
-      totalCost += MSTEdge.getCost();
-    }
-    
-    System.out.println(totalCost);*/
-    
     printResults(finalMST);
+  }
+
+  private static void printGraphMetrics(Graph graph, double density){
+    System.out.println("Number of vertices = "+graph.getNumVertices());
+    System.out.println("Edge density       = "+density);
+    System.out.println("-----------------------------");
   }
 
   private static void printResults(List<Edge> finalMST){
@@ -38,10 +41,13 @@ public class Controller{
     }
     
     System.out.println(totalCost);
+    System.out.println("-----");
     
     for(Edge MSTEdge: finalMST){
       System.out.println(MSTEdge.getStart()+" "+MSTEdge.getFinish());
     }
+    
+    System.out.println();
   }
 
 }
