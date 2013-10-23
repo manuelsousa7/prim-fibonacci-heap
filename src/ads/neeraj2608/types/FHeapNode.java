@@ -18,19 +18,22 @@ public class FHeapNode{
   
   private int index;
   
-  private int fromNode;
+  private int predecessor;
   
-  public FHeapNode(int index, int cost, int degree, int fromNode, FHeapNode leftSibling, FHeapNode rightSibling, FHeapNode parent,
-      FHeapNode child){
+  private boolean alreadyInMST;
+  
+  public FHeapNode(int index, int cost, int degree, int predecessor, FHeapNode leftSibling, FHeapNode rightSibling, FHeapNode parent,
+      FHeapNode child, boolean alreadyInMST){
     super();
     this.index = index;
     this.cost = cost;
     this.degree = degree;
-    this.fromNode = fromNode;
+    this.predecessor = predecessor;
     this.leftSibling = leftSibling;
     this.rightSibling = rightSibling;
     this.parent = parent;
     this.child = child;
+    this.alreadyInMST = alreadyInMST;
   }
   
   public int getCost(){
@@ -97,12 +100,20 @@ public class FHeapNode{
     this.index = index;
   }
 
-  public int getFromNode(){
-    return fromNode;
+  public int getPredecessor(){
+    return predecessor;
   }
 
-  public void setFromNode(int fromNode){
-    this.fromNode = fromNode;
+  public void setPredecessor(int predecessor){
+    this.predecessor = predecessor;
+  }
+
+  public boolean isAlreadyInMST(){
+    return alreadyInMST;
+  }
+
+  public void setAlreadyInMST(boolean alreadyInMST){
+    this.alreadyInMST = alreadyInMST;
   }
   
 }

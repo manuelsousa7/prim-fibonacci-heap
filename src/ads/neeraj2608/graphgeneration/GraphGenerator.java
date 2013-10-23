@@ -33,10 +33,11 @@ public class GraphGenerator{
         column = (int)(Math.random() * numVertices);
       }
       
-      if(!graph.getAdjList().get(row).containsKey(column)){ //this edge not yet in graph
+      if(!graph.getAdjList().get(row).containsKey(column) && !graph.getAdjList().get(column).containsKey(row)){ //this edge not yet in graph
         int cost = ((int)(Math.random() * 1000))+1;
         graph.getAdjList().get(row).put(column, new Edge(row, column, cost, false));
-        if(DEBUG) System.out.println(row+"--->"+column+" : "+cost);
+        graph.getAdjList().get(column).put(row, new Edge(column, row, cost, false));
+        if(DEBUG) System.out.println(row+"<--->"+column+" : "+cost);
         i++;
       }
     }
@@ -48,6 +49,38 @@ public class GraphGenerator{
   
   private static Graph createTestGraph(int numVertices){
     Graph graph = new Graph(numVertices, 0); //density is ignored since we're going to manually add test data
+    
+    graph.getAdjList().get(2).put(5, new Edge(2, 5, 36, false));
+    graph.getAdjList().get(5).put(2, new Edge(5, 2, 36, false));
+    graph.getAdjList().get(1).put(4, new Edge(1, 4, 54, false));
+    graph.getAdjList().get(4).put(1, new Edge(4, 1, 54, false));
+    graph.getAdjList().get(1).put(5, new Edge(1, 5, 30, false));
+    graph.getAdjList().get(5).put(1, new Edge(5, 1, 30, false));
+    graph.getAdjList().get(6).put(4, new Edge(6, 4, 85, false));
+    graph.getAdjList().get(4).put(6, new Edge(4, 6, 85, false));
+    graph.getAdjList().get(2).put(0, new Edge(2, 0, 91, false));
+    graph.getAdjList().get(0).put(2, new Edge(0, 2, 91, false));
+    graph.getAdjList().get(2).put(6, new Edge(2, 6, 21, false));
+    graph.getAdjList().get(6).put(2, new Edge(6, 2, 21, false));
+    graph.getAdjList().get(3).put(0, new Edge(3, 0, 46, false));
+    graph.getAdjList().get(0).put(3, new Edge(0, 3, 46, false));
+    graph.getAdjList().get(3).put(1, new Edge(3, 1, 52, false));
+    graph.getAdjList().get(1).put(3, new Edge(1, 3, 52, false));
+    graph.getAdjList().get(0).put(1, new Edge(0, 1, 80, false));
+    graph.getAdjList().get(1).put(0, new Edge(1, 0, 80, false));
+    graph.getAdjList().get(4).put(0, new Edge(4, 0, 34, false));
+    graph.getAdjList().get(0).put(4, new Edge(0, 4, 34, false));
+    
+    /*graph.getAdjList().get(4).put(2, new Edge(4, 2, 40, false));
+    graph.getAdjList().get(2).put(4, new Edge(2, 4, 40, false));
+    graph.getAdjList().get(4).put(0, new Edge(4, 0, 77, false));
+    graph.getAdjList().get(0).put(4, new Edge(0, 4, 77, false));
+    graph.getAdjList().get(2).put(0, new Edge(2, 0, 30, false));
+    graph.getAdjList().get(0).put(2, new Edge(0, 2, 30, false));
+    graph.getAdjList().get(3).put(0, new Edge(3, 0, 54, false));
+    graph.getAdjList().get(0).put(3, new Edge(0, 3, 54, false));
+    graph.getAdjList().get(3).put(1, new Edge(3, 1, 50, false));
+    graph.getAdjList().get(1).put(3, new Edge(1, 3, 50, false));*/
     
     /*
      * 0 -> 1 788
@@ -125,11 +158,118 @@ public class GraphGenerator{
      * 2--->4 : 776
      * 3--->2 : 411
      */
-    graph.getAdjList().get(1).put(3, new Edge(1, 3, 580, false));
+    /*graph.getAdjList().get(1).put(3, new Edge(1, 3, 580, false));
     graph.getAdjList().get(2).put(0, new Edge(2, 0, 909, false));
     graph.getAdjList().get(2).put(1, new Edge(2, 1, 515, false));
     graph.getAdjList().get(2).put(4, new Edge(2, 4, 776, false));
-    graph.getAdjList().get(3).put(2, new Edge(3, 2, 411, false));
+    graph.getAdjList().get(3).put(2, new Edge(3, 2, 411, false));*/
+    
+    /*graph.getAdjList().get(10).put(   8,        new Edge(10,   8,       11, false));
+    graph.getAdjList().get(8).put(   10,        new Edge(8,   10,       11, false));
+    graph.getAdjList().get(7).put(   12,        new Edge(7,   12,       38, false));
+    graph.getAdjList().get(12).put(   7,        new Edge(12,   7,       38, false));
+    graph.getAdjList().get(10).put(   0,        new Edge(10,   0,       79, false));
+    graph.getAdjList().get(0).put(   10,        new Edge(0,   10,       79, false));
+    graph.getAdjList().get(5).put(   0,        new Edge(5,   0,       45, false));
+    graph.getAdjList().get(0).put(   5,        new Edge(0,   5,       45, false));
+    graph.getAdjList().get(6).put(   2,        new Edge(6,   2,       79, false));
+    graph.getAdjList().get(2).put(   6,        new Edge(2,   6,       79, false));
+    graph.getAdjList().get(14).put(   6,        new Edge(14,   6,       61, false));
+    graph.getAdjList().get(6).put(   14,        new Edge(6,   14,       61, false));
+    graph.getAdjList().get(3).put(   12,        new Edge(3,   12,       60, false));
+    graph.getAdjList().get(12).put(   3,        new Edge(12,   3,       60, false));
+    graph.getAdjList().get(6).put(   9,        new Edge(6,   9,       97, false));
+    graph.getAdjList().get(9).put(   6,        new Edge(9,   6,       97, false));
+    graph.getAdjList().get(7).put(   0,        new Edge(7,   0,       52, false));
+    graph.getAdjList().get(0).put(   7,        new Edge(0,   7,       52, false));
+    graph.getAdjList().get(4).put(   6,        new Edge(4,   6,       90, false));
+    graph.getAdjList().get(6).put(   4,        new Edge(6,   4,       90, false));
+    graph.getAdjList().get(6).put(   13,        new Edge(6,   13,       91, false));
+    graph.getAdjList().get(13).put(   6,        new Edge(13,   6,       91, false));
+    graph.getAdjList().get(5).put(   10,        new Edge(5,   10,       28, false));
+    graph.getAdjList().get(10).put(   5,        new Edge(10,   5,       28, false));
+    graph.getAdjList().get(2).put(   13,        new Edge(2,   13,       58, false));
+    graph.getAdjList().get(13).put(   2,        new Edge(13,   2,       58, false));
+    graph.getAdjList().get(10).put(   7,        new Edge(10,   7,       32, false));
+    graph.getAdjList().get(7).put(   10,        new Edge(7,   10,       32, false));
+    graph.getAdjList().get(11).put(   6,        new Edge(11,   6,       57, false));
+    graph.getAdjList().get(6).put(   11,        new Edge(6,   11,       57, false));
+    graph.getAdjList().get(14).put(   11,        new Edge(14,   11,       44, false));
+    graph.getAdjList().get(11).put(   14,        new Edge(11,   14,       44, false));
+    graph.getAdjList().get(12).put(   0,        new Edge(12,   0,       97, false));
+    graph.getAdjList().get(0).put(   12,        new Edge(0,   12,       97, false));
+    graph.getAdjList().get(12).put(   4,        new Edge(12,   4,       21, false));
+    graph.getAdjList().get(4).put(   12,        new Edge(4,   12,       21, false));
+    graph.getAdjList().get(3).put(   6,        new Edge(3,   6,       79, false));
+    graph.getAdjList().get(6).put(   3,        new Edge(6,   3,       79, false));
+    graph.getAdjList().get(9).put(   4,        new Edge(9,   4,       69, false));
+    graph.getAdjList().get(4).put(   9,        new Edge(4,   9,       69, false));
+    graph.getAdjList().get(0).put(   1,        new Edge(0,   1,       17, false));
+    graph.getAdjList().get(1).put(   0,        new Edge(1,   0,       17, false));
+    graph.getAdjList().get(9).put(   2,        new Edge(9,   2,       85, false));
+    graph.getAdjList().get(2).put(   9,        new Edge(2,   9,       85, false));
+    graph.getAdjList().get(4).put(   7,        new Edge(4,   7,       76, false));
+    graph.getAdjList().get(7).put(   4,        new Edge(7,   4,       76, false));
+    graph.getAdjList().get(9).put(   12,        new Edge(9,   12,       39, false));
+    graph.getAdjList().get(12).put(   9,        new Edge(12,   9,       39, false));
+    graph.getAdjList().get(5).put(   1,        new Edge(5,   1,       40, false));
+    graph.getAdjList().get(1).put(   5,        new Edge(1,   5,       40, false));
+    graph.getAdjList().get(14).put(   5,        new Edge(14,   5,       21, false));
+    graph.getAdjList().get(5).put(   14,        new Edge(5,   14,       21, false));
+    graph.getAdjList().get(14).put(   7,        new Edge(14,   7,       10, false));
+    graph.getAdjList().get(7).put(   14,        new Edge(7,   14,       10, false));
+    graph.getAdjList().get(5).put(   4,        new Edge(5,   4,       13, false));
+    graph.getAdjList().get(4).put(   5,        new Edge(4,   5,       13, false));
+    graph.getAdjList().get(5).put(   11,        new Edge(5,   11,       59, false));
+    graph.getAdjList().get(11).put(   5,        new Edge(11,   5,       59, false));
+    graph.getAdjList().get(6).put(   0,        new Edge(6,   0,       73, false));
+    graph.getAdjList().get(0).put(   6,        new Edge(0,   6,       73, false));
+    graph.getAdjList().get(6).put(   1,        new Edge(6,   1,       52, false));
+    graph.getAdjList().get(1).put(   6,        new Edge(1,   6,       52, false));
+    graph.getAdjList().get(12).put(   10,        new Edge(12,   10,       15, false));
+    graph.getAdjList().get(10).put(   12,        new Edge(10,   12,       15, false));
+    graph.getAdjList().get(1).put(   3,        new Edge(1,   3,       36, false));
+    graph.getAdjList().get(3).put(   1,        new Edge(3,   1,       36, false));
+    graph.getAdjList().get(14).put(   9,        new Edge(14,   9,       75, false));
+    graph.getAdjList().get(9).put(   14,        new Edge(9,   14,       75, false));
+    graph.getAdjList().get(14).put(   2,        new Edge(14,   2,       73, false));
+    graph.getAdjList().get(2).put(   14,        new Edge(2,   14,       73, false));
+    graph.getAdjList().get(1).put(   2,        new Edge(1,   2,       11, false));
+    graph.getAdjList().get(2).put(   1,        new Edge(2,   1,       11, false));
+    graph.getAdjList().get(13).put(   4,        new Edge(13,   4,       28, false));
+    graph.getAdjList().get(4).put(   13,        new Edge(4,   13,       28, false));
+    graph.getAdjList().get(10).put(   14,        new Edge(10,   14,       97, false));
+    graph.getAdjList().get(14).put(   10,        new Edge(14,   10,       97, false));
+    graph.getAdjList().get(11).put(   9,        new Edge(11,   9,       48, false));
+    graph.getAdjList().get(9).put(   11,        new Edge(9,   11,       48, false));
+    graph.getAdjList().get(7).put(   11,        new Edge(7,   11,       85, false));
+    graph.getAdjList().get(11).put(   7,        new Edge(11,   7,       85, false));
+    graph.getAdjList().get(14).put(   1,        new Edge(14,   1,       69, false));
+    graph.getAdjList().get(1).put(   14,        new Edge(1,   14,       69, false));
+    graph.getAdjList().get(3).put(   0,        new Edge(3,   0,       61, false));
+    graph.getAdjList().get(0).put(   3,        new Edge(0,   3,       61, false));
+    graph.getAdjList().get(10).put(   3,        new Edge(10,   3,       66, false));
+    graph.getAdjList().get(3).put(   10,        new Edge(3,   10,       66, false));
+    graph.getAdjList().get(11).put(   13,        new Edge(11,   13,       76, false));
+    graph.getAdjList().get(13).put(   11,        new Edge(13,   11,       76, false));
+    graph.getAdjList().get(8).put(   11,        new Edge(8,   11,       95, false));
+    graph.getAdjList().get(11).put(   8,        new Edge(11,   8,       95, false));
+    graph.getAdjList().get(4).put(   11,        new Edge(4,   11,       6, false));
+    graph.getAdjList().get(11).put(   4,        new Edge(11,   4,       6, false));
+    graph.getAdjList().get(2).put(   0,        new Edge(2,   0,       65, false));
+    graph.getAdjList().get(0).put(   2,        new Edge(0,   2,       65, false));
+    graph.getAdjList().get(4).put(   2,        new Edge(4,   2,       15, false));
+    graph.getAdjList().get(2).put(   4,        new Edge(2,   4,       15, false));
+    graph.getAdjList().get(1).put(   7,        new Edge(1,   7,       99, false));
+    graph.getAdjList().get(7).put(   1,        new Edge(7,   1,       99, false));
+    graph.getAdjList().get(10).put(   1,        new Edge(10,   1,       91, false));
+    graph.getAdjList().get(1).put(   10,        new Edge(1,   10,       91, false));
+    graph.getAdjList().get(12).put(   14,        new Edge(12,   14,       60, false));
+    graph.getAdjList().get(14).put(   12,        new Edge(14,   12,       60, false));
+    graph.getAdjList().get(8).put(   4,        new Edge(8,   4,       87, false));
+    graph.getAdjList().get(4).put(   8,        new Edge(4,   8,       87, false));*/
+
+
     
     return graph;
   }

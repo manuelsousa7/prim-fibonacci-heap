@@ -15,17 +15,26 @@ public class Controller{
   public static void main(String[] args){
     int numVertices = 50;
     double density = 0.5;
-    Graph graph = GraphGenerator.generateGraph(numVertices, density);
     
-    printGraphMetrics(graph, density);
+    //uncomment the while to check if the f-heap, simple scheme equality breaks down at any time
+    /*while(true){*/
     
-    List<Edge> finalMST = new SimpleSchemeMSTGenerator().generateMST(graph);
+      Graph graph = GraphGenerator.generateGraph(numVertices, density);
+
+      printGraphMetrics(graph, density);
+
+      List<Edge> finalMST = new SimpleSchemeMSTGenerator().generateMST(graph);
+
+      int total1 = printResults(finalMST);
+
+      finalMST = new FHeapSchemeMSTGenerator().generateMST(graph);
+
+      int total2 = printResults(finalMST);
+
+      /*if(total1 != total2)
+        break;
+    }*/
     
-    printResults(finalMST);
-    
-    finalMST = new FHeapSchemeMSTGenerator().generateMST(graph);
-    
-    printResults(finalMST);
   }
 
   private static void printGraphMetrics(Graph graph, double density){
@@ -34,7 +43,7 @@ public class Controller{
     System.out.println("-----------------------------");
   }
 
-  private static void printResults(List<Edge> finalMST){
+  private static int printResults(List<Edge> finalMST){
     int totalCost = 0;
     for(Edge MSTEdge: finalMST){
       totalCost += MSTEdge.getCost();
@@ -44,10 +53,11 @@ public class Controller{
     System.out.println("-----");
     
     for(Edge MSTEdge: finalMST){
-      System.out.println(MSTEdge.getStart()+" "+MSTEdge.getFinish());
+      System.out.println(MSTEdge.getStart()+"\t"+MSTEdge.getFinish()+"\t"+MSTEdge.getCost());
     }
     
     System.out.println();
+    return totalCost;
   }
 
 }

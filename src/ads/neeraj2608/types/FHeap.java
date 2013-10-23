@@ -22,32 +22,28 @@ public class FHeap{
   }
   
   public void insert(int key){
-    nodeList.add(new FHeapNode(size, key, 0, 0, null, null, null, null));
+    FHeapNode newNode = new FHeapNode(size, key, 0, 0, null, null, null, null, false);
+    nodeList.add(newNode);
     size++;
-    insertIntoRootList(nodeList.get(size-1));
+    if(min == null){
+      newNode.setLeftSibling(newNode);
+      newNode.setRightSibling(newNode);
+      min = newNode;
+    } else {
+      insertIntoRootList(nodeList.get(size-1));
+    }
   }
   
-  private void insertIntoRootList(FHeapNode fNode){
-    insertIntoRootListWithoutUpdatingMin(fNode);
+  private void insertIntoRootList(FHeapNode nodeToInsert){
+    spliceNodeToRight(min, nodeToInsert);
+    nodeToInsert.setParent(null);
+    nodeToInsert.setMarked(false);
     
-    if(fNode.getCost() < min.getCost())
-      min = fNode;
+    if(nodeToInsert.getCost() < min.getCost())
+      min = nodeToInsert;
   }
 
-  public void insertIntoRootListWithoutUpdatingMin(FHeapNode fNode){
-    if(min == null){
-      fNode.setLeftSibling(fNode);
-      fNode.setRightSibling(fNode);
-      min = fNode;
-      return;
-    }
-    
-    spliceAndAddNodeToRight(min, fNode);
-    fNode.setParent(null);
-    fNode.setMarked(false);
-  }
-
-  private void spliceAndAddNodeToRight(FHeapNode existingNode, FHeapNode newNode){
+  private void spliceNodeToRight(FHeapNode existingNode, FHeapNode newNode){
     newNode.setRightSibling(existingNode.getRightSibling());
     newNode.setLeftSibling(existingNode);
     existingNode.getRightSibling().setLeftSibling(newNode);
@@ -58,61 +54,48 @@ public class FHeap{
     if(size == 0)
       throw new RuntimeException("Error: No elements in heap");
     
-    if(size == 1){
-      size--;
-      return min;
-    }
+    FHeapNode nodeToDelete = nodeList.get(min.getIndex());
     
-    // insert the children of the node we're about to delete into the root chain. we do not touch the min
-    // while doing this! min will be updated after the heap has been binomialized
-    insertChildrenOfNodeIntoRootList(min);
+    // insert the children of the node we're about to delete into the root chain
+    insertChildrenOfNodeIntoRootList(nodeToDelete);
     
-    // connect up min's two neighbors so min is out of the root chain
-    joinNeighbors(min);
+    // connect up the two neighbors of the node we're about to delete
+    joinNeighbors(nodeToDelete);
     
-    FHeapNode nodeToDelete = new FHeapNode(min.getIndex(), min.getCost(), 0, min.getFromNode(), null, null, null, null);
-    size--;
-    nodeList.set(min.getIndex(), null); // set the corresponding nodeList object to null to indicate it's already in the MST (this will be used to decide
+    nodeToDelete.setAlreadyInMST(true); // set the corresponding nodeList object to null to indicate it's already in the MST (this will be used to decide
                                         // whether to ignore this node in decreaseKey
+    size--;
     
-    updateMin(min.getRightSibling());
+    updateMin(nodeToDelete.getRightSibling());
     
     binomialize(min);
     
     return nodeToDelete;
   }
 
-  private void updateMin(FHeapNode startNode){
-    min = startNode;
-    updateMin(startNode, startNode);
-  }
-
-  private void updateMin(FHeapNode startNode, FHeapNode currentNode){
-    if(currentNode.getCost() < min.getCost())
-      min = currentNode;
-    
-    if(currentNode.getRightSibling() != startNode)
-      updateMin(startNode, currentNode.getRightSibling());
-  }
-
   private void insertChildrenOfNodeIntoRootList(FHeapNode node){
     if(node.getChild() != null){
-      insertAllChildrenIntoRootList(node.getChild());
+      FHeapNode startNode = node.getChild();
+      FHeapNode currentNode = startNode.getRightSibling();
+      insertIntoRootList(startNode);
+      
+      while(currentNode != startNode){
+        FHeapNode tempNode = currentNode.getRightSibling();
+        insertIntoRootList(currentNode);
+        currentNode = tempNode;
+      }
     }
   }
 
-  private void insertAllChildrenIntoRootList(FHeapNode node){
-    insertAllChildrenIntoRootList(node, node);
-  }
-
-  private void insertAllChildrenIntoRootList(FHeapNode startNode, FHeapNode sibling){
-    if(startNode != sibling.getRightSibling()){
-      FHeapNode nextNode = sibling.getRightSibling();
-      insertIntoRootListWithoutUpdatingMin(sibling);
-      insertAllChildrenIntoRootList(startNode, nextNode);
-      return;
+  private void updateMin(FHeapNode startNode){
+    min = startNode;
+    FHeapNode currentNode = startNode.getRightSibling();
+    while(currentNode != startNode){
+      if(!currentNode.isAlreadyInMST() && currentNode.getCost() < min.getCost()){
+        min = currentNode;
+      }
+      currentNode = currentNode.getRightSibling();
     }
-    insertIntoRootListWithoutUpdatingMin(sibling);
   }
   
   private void binomialize(FHeapNode startNode){
@@ -130,6 +113,8 @@ public class FHeap{
       if(nodeDegrees.containsKey(degree)){
         FHeapNode existingNodeOfSameDegree = nodeDegrees.get(degree);
         FHeapNode winningNode = union(node, existingNodeOfSameDegree);
+        if(winningNode.getCost() <= min.getCost())
+          min = winningNode;
         binomialize(winningNode); // start afresh
         return;
       } else {
@@ -147,21 +132,21 @@ public class FHeap{
       // without passing through the node that we just demoted
       joinNeighbors(node2);
       
-      node1.setDegree(node1.getDegree() + 1);
-      
       // connect up the child nodes
-      if(null == node1.getChild()){ // node1 has no preexisting children. this will be its first child. x <-> x
+      if(node1.getDegree() == 0){ // node1 has no preexisting children. this will be its first child. x <-> x
         node1.setChild(node2);
         node2.setLeftSibling(node2);
         node2.setRightSibling(node2);
       }
       else
-        spliceAndAddNodeToRight(node1.getChild(), node2);
+        spliceNodeToRight(node1.getChild(), node2);
+      
+      node1.setDegree(node1.getDegree() + 1); // increment degree
       
       return node1;
     }
-    
-    return union(node2, node1); // node2 was < node1; try again
+    else
+      return union(node2, node1); // node2 was < node1; try again
   }
 
   public void joinNeighbors(FHeapNode node){
@@ -169,46 +154,43 @@ public class FHeap{
     node.getRightSibling().setLeftSibling(node.getLeftSibling());
   }
   
-  public void decreaseKey(FHeapNode node, int newKey, int fromNode){
-    if(node == null) //null indicates this node has already been added to the MST and should be ignored
+  public void decreaseKey(FHeapNode node, int newKey, int predecessor){
+    if(node.isAlreadyInMST())
       return;
     
-    if(newKey > node.getCost())
+    if(newKey >= node.getCost())
       return;
     
     node.setCost(newKey);
-    node.setFromNode(fromNode);
+    node.setPredecessor(predecessor);
     
     cut(node);
   }
 
   private void cut(FHeapNode node){
-    if(null == node.getParent()){ // stop if we've ascended up to the root chain (or if we started at the root chain)
+    FHeapNode parent = node.getParent(); // save this beforehand because the reference to the parent will be nulled out in the insertIntoRootList method
+    if(null == parent){ // stop if we're at the root chain or if we ascended to it
+      if(node.getCost() < min.getCost())
+        min = node;
       return;
-    } else if(node.getCost() < node.getParent().getCost()){
-      FHeapNode parent = node.getParent(); // save this beforehand because the reference to the parent will be nulled out in the insertIntoRootListWithoutUpdatingMin method
-      parent.setDegree(parent.getDegree() - 1);
+    } else if(node.getCost() < parent.getCost()){
+      parent.setDegree(parent.getDegree() - 1); // decrement degree
       
-      if(parent.getChild() == node){ // any other children of this parent must not become unreachable from the parent just because we promoted this node to the root chain
-        if(node.getRightSibling() != node){
+      if(node.getRightSibling() == node)
+        parent.setChild(null);
+      else{
+        if(parent.getChild() == node){
           parent.setChild(node.getRightSibling());
-          joinNeighbors(node);
         }
-        else // this node had no siblings and hence can be safely promoted and the parent can be rendered childless
-          parent.setChild(null);
-      } else { // the parent's direct child is a sibling of the node we're about to promote. cut all connections between it and the direct child
         joinNeighbors(node);
       }
       
-      insertIntoRootListWithoutUpdatingMin(node); // don't update min because deleteMin has yet to be called
-      node.setMarked(false);
-
-      if(parent.isMarked()){
-        cut(parent);
-        return;
-      }
-      else
+      insertIntoRootList(node);
+      
+      if(!parent.isMarked())
         parent.setMarked(true);
+      else
+        cut(parent);
     }
   }
 
