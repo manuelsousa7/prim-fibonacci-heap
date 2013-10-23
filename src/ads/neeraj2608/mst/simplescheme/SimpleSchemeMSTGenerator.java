@@ -1,24 +1,21 @@
-package ads.neeraj2608.mstgeneration.simplescheme;
+package ads.neeraj2608.mst.simplescheme;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ads.neeraj2608.mstgeneration.iface.MSTGeneratorInterface;
-import ads.neeraj2608.types.Edge;
-import ads.neeraj2608.types.Graph;
+import ads.neeraj2608.mst.common.MSTGeneratorInterface;
+import ads.neeraj2608.types.common.Edge;
+import ads.neeraj2608.types.common.Graph;
 
 /**
  * Array based (ArrayList) implementation of Prim's shortest path algorithm
- * Complexity is O(n^2)
- * @author Raj
- *
  */
 public class SimpleSchemeMSTGenerator implements MSTGeneratorInterface{
 
   @Override
   public List<Edge> generateMST(Graph graph){
     List<Integer> nodesInMST = new ArrayList<Integer>();
-    int startMSTAt = graph.selectAConnectedNode();
+    int startMSTAt = graph.selectARandomNode();
     nodesInMST.add(startMSTAt);
     
     Edge[] feelerEdges = new Edge[graph.getNumVertices()];

@@ -1,4 +1,4 @@
-package ads.neeraj2608.types;
+package ads.neeraj2608.types.fheapscheme;
 
 public class FHeapNode{
   

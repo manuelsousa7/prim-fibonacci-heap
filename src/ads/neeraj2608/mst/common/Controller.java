@@ -1,12 +1,11 @@
-package ads.neeraj2608.controller;
+package ads.neeraj2608.mst.common;
 
 import java.util.List;
 
-import ads.neeraj2608.graphgeneration.GraphGenerator;
-import ads.neeraj2608.mstgeneration.fheapscheme.FHeapSchemeMSTGenerator;
-import ads.neeraj2608.mstgeneration.simplescheme.SimpleSchemeMSTGenerator;
-import ads.neeraj2608.types.Edge;
-import ads.neeraj2608.types.Graph;
+import ads.neeraj2608.mst.fheapscheme.FHeapSchemeMSTGenerator;
+import ads.neeraj2608.mst.simplescheme.SimpleSchemeMSTGenerator;
+import ads.neeraj2608.types.common.Edge;
+import ads.neeraj2608.types.common.Graph;
 
 public class Controller{
   

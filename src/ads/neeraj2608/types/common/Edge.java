@@ -1,5 +1,15 @@
-package ads.neeraj2608.types;
+package ads.neeraj2608.types.common;
 
+/**
+ * Models a graph edge.
+ * Edges have four fields:
+ * <ul>
+ * <li> <b>start</b> the node that the edge starts at
+ * <li> <b>finish</b> the node that the edge ends at
+ * <li> <b>cost</b> the cost of the edge (in F-heap terminology, the "key")
+ * <li> <b>alreadyInMST</b> a boolean flag that indicates whether this edge is already in the MST
+ * </ul>
+ */
 public class Edge{
 
   private int start;

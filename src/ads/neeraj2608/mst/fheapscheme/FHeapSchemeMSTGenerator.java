@@ -1,14 +1,14 @@
-package ads.neeraj2608.mstgeneration.fheapscheme;
+package ads.neeraj2608.mst.fheapscheme;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import ads.neeraj2608.mstgeneration.iface.MSTGeneratorInterface;
-import ads.neeraj2608.types.Edge;
-import ads.neeraj2608.types.FHeap;
-import ads.neeraj2608.types.FHeapNode;
-import ads.neeraj2608.types.Graph;
+import ads.neeraj2608.mst.common.MSTGeneratorInterface;
+import ads.neeraj2608.types.common.Edge;
+import ads.neeraj2608.types.common.Graph;
+import ads.neeraj2608.types.fheapscheme.FHeap;
+import ads.neeraj2608.types.fheapscheme.FHeapNode;
 
 /**
  * Fibonacci-heap based implementation of Prim's shortest path algorithm
@@ -23,7 +23,7 @@ public class FHeapSchemeMSTGenerator implements MSTGeneratorInterface{
     fHeap = new FHeap();
     List<Edge> generatedMST = new ArrayList<Edge>();
     
-    int startNodeIndex = graph.selectAConnectedNode();
+    int startNodeIndex = graph.selectARandomNode();
     
     for(int i=0;i<graph.getNumVertices();i++){
         fHeap.insert(Integer.MAX_VALUE);

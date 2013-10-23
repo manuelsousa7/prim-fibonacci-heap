@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import ads.neeraj2608.types.Graph;
+import ads.neeraj2608.types.common.Graph;
 
 /*
  * Facade for the actual code. Processes the command being given on the input line.

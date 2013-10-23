@@ -1,11 +1,11 @@
-package ads.neeraj2608.graphgeneration;
+package ads.neeraj2608.mst.common;
 
-import static ads.neeraj2608.controller.Controller.DEBUG;
+import static ads.neeraj2608.mst.common.Controller.DEBUG;
 
 import java.util.HashSet;
 
-import ads.neeraj2608.types.Edge;
-import ads.neeraj2608.types.Graph;
+import ads.neeraj2608.types.common.Edge;
+import ads.neeraj2608.types.common.Graph;
 
 public class GraphGenerator{
   
@@ -45,7 +45,7 @@ public class GraphGenerator{
    * @return true if <b>NOT</b> connected, false otherwise. False is good!
    */
   private static boolean notConnected(Graph graph){
-    int startDFSAt = graph.selectAConnectedNode();
+    int startDFSAt = graph.selectARandomNode();
     
     HashSet<Integer> visitedNodes = new HashSet<Integer>();
     visitedNodes.add(startDFSAt);
