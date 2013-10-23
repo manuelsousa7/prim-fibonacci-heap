@@ -13,7 +13,7 @@ public class Controller{
   public final static boolean DEBUG = false;
 
   public static void main(String[] args){
-    int numVertices = 50;
+    int numVertices = 1000;
     double density = 0.5;
     
     //uncomment the while to check if the f-heap, simple scheme equality breaks down at any time
