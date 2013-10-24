@@ -1,26 +1,29 @@
 package ads.neeraj2608.types.fheapscheme;
 
+/**
+ * This class models a Fibonacci heap (F-heap) node.
+ */
 public class FHeapNode{
   
-  private int cost;
+  private int cost; // the key or cost of the node
   
-  private FHeapNode leftSibling;
+  private FHeapNode leftSibling; // references the node to the left
   
-  private FHeapNode rightSibling;
+  private FHeapNode rightSibling; // references the node to the right
   
-  private FHeapNode parent;
+  private FHeapNode parent; // references the parent node
   
-  private FHeapNode child;
+  private FHeapNode child; // references the child node
   
-  private boolean marked;
+  private boolean marked; // flag used for the cut (and cascade-cut) operations
   
-  private int degree;
+  private int degree; // records the number of children of this node. Used when merging root list nodes of the same degree
   
-  private int index;
+  private int index; // identifies the node uniquely
   
-  private int predecessor;
+  private int predecessor; // stores the index of the node that we arrived at this node from
   
-  private boolean alreadyInMST;
+  private boolean alreadyInMST; // flag that indicates this node is already in the MST being built
   
   public FHeapNode(int index, int cost, int degree, int predecessor, FHeapNode leftSibling, FHeapNode rightSibling, FHeapNode parent,
       FHeapNode child, boolean alreadyInMST){

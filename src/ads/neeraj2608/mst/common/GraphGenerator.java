@@ -7,6 +7,9 @@ import java.util.HashSet;
 import ads.neeraj2608.types.common.Edge;
 import ads.neeraj2608.types.common.Graph;
 
+/**
+ * Class that generates a random, unconnected, undirected graph
+ */
 public class GraphGenerator{
   
   private static final int SENTINEL = -1; // used to indicate that a given graph node has NO incoming edges as yet
