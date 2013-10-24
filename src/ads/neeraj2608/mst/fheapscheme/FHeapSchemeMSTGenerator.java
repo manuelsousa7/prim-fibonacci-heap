@@ -11,8 +11,8 @@ import ads.neeraj2608.types.fheapscheme.FHeap;
 import ads.neeraj2608.types.fheapscheme.FHeapNode;
 
 /**
- * Fibonacci-heap based implementation of Prim's shortest path algorithm
- * @author Raj
+ * Class that generates the minimum spanning tree using a Fibonacci
+ * heap (F-heap) based implementation of Prim's shortest path algorithm
  */
 public class FHeapSchemeMSTGenerator implements MSTGeneratorInterface{
   

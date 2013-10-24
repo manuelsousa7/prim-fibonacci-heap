@@ -7,6 +7,10 @@ import ads.neeraj2608.mst.simplescheme.SimpleSchemeMSTGenerator;
 import ads.neeraj2608.types.common.Edge;
 import ads.neeraj2608.types.common.Graph;
 
+/**
+ * This class only used for development and debugging!!
+ */
+@Deprecated
 public class Controller{
   
   public final static boolean DEBUG = false;

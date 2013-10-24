@@ -114,6 +114,7 @@ public class GraphGenerator{
     int nextNode = startNode;
     int numEdgesAdded = 0;
     visitedNodes.add(startNode);
+    firstIncidentEdges[startNode] = startNode;
     
     while(visitedNodes.size() < numVertices){
       while((nextNode = (int) (Math.random() * numVertices)) == startNode); // no self-connections!
