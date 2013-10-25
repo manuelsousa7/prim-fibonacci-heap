@@ -108,7 +108,7 @@ public class FHeap{
 
     updateMin(nodeToDelete.getRightSibling());
 
-    binomialize(min);
+    nonRecursiveBinomialize(min);
 
     return nodeToDelete;
   }
@@ -135,6 +135,46 @@ public class FHeap{
         min = currentNode;
       }
       currentNode = currentNode.getRightSibling();
+    }
+  }
+
+  /**
+   * Same as {@link FHeap#binomialize(FHeapNode)}, only non-recursive.
+   * Introduced because the recursive version craps out (stack overflow) for
+   * large graphs (n approx 3000)
+   * 
+   * @param startNode
+   *          Node in the root list to start the merge at
+   */
+  private void nonRecursiveBinomialize(FHeapNode startNode){
+    boolean DONE = false;
+    FHeapNode currentNode = startNode;
+    nodeDegrees.clear();
+
+    while(!DONE){
+      while(true){
+        int degree = currentNode.getDegree();
+        if(nodeDegrees.containsKey(degree)){
+          FHeapNode existingNodeOfSameDegree = nodeDegrees.get(degree);
+          FHeapNode winningNode = union(currentNode, existingNodeOfSameDegree);
+          currentNode = winningNode;
+          startNode = winningNode;
+          if(winningNode.getCost() <= min.getCost())
+            min = winningNode;
+          nodeDegrees.clear();
+          break;
+        }
+        else{
+          nodeDegrees.put(degree, currentNode);
+          currentNode = currentNode.getRightSibling();
+          if(currentNode == startNode){
+            DONE = true;
+            break;
+          }
+        }
+      }
+      //if(currentNode.getCost() <= min.getCost())
+      //  min = currentNode;
     }
   }
 
