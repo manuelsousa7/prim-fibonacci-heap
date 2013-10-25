@@ -32,7 +32,22 @@ public class SimpleSchemeMSTGenerator implements MSTGeneratorInterface{
     return finalMSTEdges;
   }
 
-  public void buildMSTNodeByNode(Graph graph,
+  /**
+   * Recursive method to build the MST. At every step of the algorithm, we
+   * record the outgoing edges from <i>all</i> of the vertices put into the MST
+   * so far to any vertices <i>not</i> already in the MST. These edges are
+   * recorded in an array. If we have already recorded an edge going to the
+   * target vertex, we only overwrite it with a newly discovered edge if the
+   * latter has a lower cost than the existing edge.
+   * 
+   * @param graph Graph object to build the MST of
+   * @param startMSTAt node to start the MST at
+   * @param nodesInMST nodes put into the MST at any given instant
+   * @param finalMSTEdges the edges in the built MST
+   * @param feelerEdges list of edges going from the set of vertices in the MST
+   *                    to the set of vertices not in the MST
+   */
+  private void buildMSTNodeByNode(Graph graph,
       int startMSTAt,
       List<Integer> nodesInMST,
       List<Edge> finalMSTEdges,
