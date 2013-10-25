@@ -187,7 +187,7 @@ public class mst{
     System.out.println("                 \t  Prints time taken by both schemes");
     System.out.println("'mst -s filename'\t: Runs Prim's algorithm using the simple scheme on a graph initialized from file 'filename'");
     System.out.println("'mst -f filename'\t: Runs Prim's algorithm using the f-heap scheme on a graph initialized from file 'filename'");
-    System.out.println("'runexperiment'  \t: Runs the randomized mode experiment outlined in the report");
+    System.out.println("'runexperiment'  \t: Runs the randomized mode experiment outlined in the project description");
     System.out.println("'exit'           \t: Quits this program");
     System.out.println();
   }
