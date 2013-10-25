@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ads.neeraj2608.mst.common.MSTGeneratorInterface;
+import ads.neeraj2608.types.common.AdjListNode;
 import ads.neeraj2608.types.common.Edge;
 import ads.neeraj2608.types.common.Graph;
 
@@ -53,7 +54,8 @@ public class SimpleSchemeMSTGenerator implements MSTGeneratorInterface{
       List<Edge> finalMSTEdges,
       Edge[] feelerEdges){
     //add the outgoing edges from this node to all the outgoing edges we already have
-    for(Edge feelerEdge : graph.getAdjList().get(startMSTAt).values()){
+    for(AdjListNode node: graph.getAdjList().get(startMSTAt)){
+      Edge feelerEdge = node.getEdge();
       if(!nodesInMST.contains(feelerEdge.getFinish())){
         if(feelerEdge.getCost() < feelerEdges[feelerEdge.getFinish()].getCost()){
           feelerEdges[feelerEdge.getFinish()] = feelerEdge;

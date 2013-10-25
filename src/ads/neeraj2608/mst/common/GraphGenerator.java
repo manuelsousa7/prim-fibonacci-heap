@@ -3,7 +3,7 @@ package ads.neeraj2608.mst.common;
 import static ads.neeraj2608.mst.common.Controller.DEBUG;
 
 import java.util.HashSet;
-
+import ads.neeraj2608.types.common.AdjListNode;
 import ads.neeraj2608.types.common.Edge;
 import ads.neeraj2608.types.common.Graph;
 
@@ -69,10 +69,10 @@ public class GraphGenerator{
    * @param graph graph object to check
    */
   private static void runDFSFromNode(Integer startNode, HashSet<Integer> visitedNodes, Graph graph){
-    for(Integer i: graph.getAdjList().get(startNode).keySet()){
-      if(!visitedNodes.contains(i)){
-        visitedNodes.add(i);
-        runDFSFromNode(i, visitedNodes, graph);
+    for(AdjListNode node: graph.getAdjList().get(startNode)){
+      if(!visitedNodes.contains(node.getTargetNode())){
+        visitedNodes.add(node.getTargetNode());
+        runDFSFromNode(node.getTargetNode(), visitedNodes, graph);
       }
     }
   }
@@ -118,12 +118,12 @@ public class GraphGenerator{
     
     while(visitedNodes.size() < numVertices){
       while((nextNode = (int) (Math.random() * numVertices)) == startNode); // no self-connections!
-      if(!graph.getAdjList().get(startNode).containsKey(nextNode)){
+      if(!graph.getAdjList().get(startNode).contains(new AdjListNode(nextNode, null))){
         int cost = ((int)(Math.random() * MAX_EDGE_COST))+1;
-        graph.getAdjList().get(startNode).put(nextNode, new Edge(startNode, nextNode, cost, false)); //undirected graph; symmetrical connections
-        graph.getAdjList().get(nextNode).put(startNode, new Edge(nextNode, startNode, cost, false)); //undirected graph; symmetrical connections
+        graph.getAdjList().get(startNode).add(new AdjListNode(nextNode, new Edge(startNode, nextNode, cost, false))); //undirected graph; symmetrical connections
+        graph.getAdjList().get(nextNode).add(new AdjListNode(startNode, new Edge(nextNode, startNode, cost, false))); //undirected graph; symmetrical connections
         visitedNodes.add(nextNode);
-        numEdgesAdded++;
+        numEdgesAdded = numEdgesAdded + 2;
         if(firstIncidentEdges[nextNode] == SENTINEL){
           firstIncidentEdges[nextNode] = startNode;
         }
@@ -135,22 +135,22 @@ public class GraphGenerator{
       while(numEdgesAdded < graph.getNumEdges()){
         startNode = (int) (Math.random() * numVertices);
         while((nextNode = (int) (Math.random() * numVertices)) == startNode); // no self-connections!
-        if(!graph.getAdjList().get(startNode).containsKey(nextNode)){
+        if(!graph.getAdjList().get(startNode).contains(new AdjListNode(nextNode, null))){
           int cost = ((int)(Math.random() * 1000))+1;
-          graph.getAdjList().get(startNode).put(nextNode, new Edge(startNode, nextNode, cost, false)); //undirected graph; symmetrical connections
-          graph.getAdjList().get(nextNode).put(startNode, new Edge(nextNode, startNode, cost, false)); //undirected graph; symmetrical connections
-          numEdgesAdded++;
+          graph.getAdjList().get(startNode).add(new AdjListNode(nextNode, new Edge(startNode, nextNode, cost, false))); //undirected graph; symmetrical connections
+          graph.getAdjList().get(nextNode).add(new AdjListNode(startNode, new Edge(nextNode, startNode, cost, false))); //undirected graph; symmetrical connections
+          numEdgesAdded = numEdgesAdded + 2;
         }
       }
     } else if (numEdgesAdded > graph.getNumEdges()){ // we have too many edges, prune some. take care not to maroon any existing vertex
       while(numEdgesAdded > graph.getNumEdges()){
         startNode = (int) (Math.random() * numVertices);
         while((nextNode = (int) (Math.random() * numVertices)) == startNode); // no self-connections!
-        if(graph.getAdjList().get(startNode).containsKey(nextNode)){
+        if(graph.getAdjList().get(startNode).contains(new AdjListNode(nextNode, null))){
           if(firstIncidentEdges[nextNode] != startNode){ // remove the edge only if it's not the first incident edge
-            graph.getAdjList().get(startNode).remove(nextNode);
-            graph.getAdjList().get(nextNode).remove(startNode);
-            numEdgesAdded--;
+            graph.getAdjList().get(startNode).remove(new AdjListNode(nextNode, null));
+            graph.getAdjList().get(nextNode).remove(new AdjListNode(startNode, null));
+            numEdgesAdded = numEdgesAdded - 2;
           }
         }
       }
@@ -180,7 +180,7 @@ public class GraphGenerator{
   private static Graph createTestGraph(int numVertices){
     Graph graph = new Graph(numVertices, 0); //density is ignored since we're going to manually add test data
     
-    graph.getAdjList().get(2).put(5, new Edge(2, 5, 36, false));
+    /*graph.getAdjList().get(2).put(5, new Edge(2, 5, 36, false));
     graph.getAdjList().get(5).put(2, new Edge(5, 2, 36, false));
     graph.getAdjList().get(1).put(4, new Edge(1, 4, 54, false));
     graph.getAdjList().get(4).put(1, new Edge(4, 1, 54, false));
@@ -199,7 +199,7 @@ public class GraphGenerator{
     graph.getAdjList().get(0).put(1, new Edge(0, 1, 80, false));
     graph.getAdjList().get(1).put(0, new Edge(1, 0, 80, false));
     graph.getAdjList().get(4).put(0, new Edge(4, 0, 34, false));
-    graph.getAdjList().get(0).put(4, new Edge(0, 4, 34, false));
+    graph.getAdjList().get(0).put(4, new Edge(0, 4, 34, false));*/
     
     /*graph.getAdjList().get(4).put(2, new Edge(4, 2, 40, false));
     graph.getAdjList().get(2).put(4, new Edge(2, 4, 40, false));

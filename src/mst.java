@@ -10,6 +10,7 @@ import ads.neeraj2608.mst.common.GraphGenerator;
 import ads.neeraj2608.mst.common.MSTGenerator;
 import ads.neeraj2608.mst.fheapscheme.FHeapSchemeMSTGenerator;
 import ads.neeraj2608.mst.simplescheme.SimpleSchemeMSTGenerator;
+import ads.neeraj2608.types.common.AdjListNode;
 import ads.neeraj2608.types.common.Edge;
 import ads.neeraj2608.types.common.Graph;
 
@@ -135,8 +136,8 @@ public class mst{
         int startNode = Integer.parseInt(values[0]);
         int endNode = Integer.parseInt(values[1]);
         int cost = Integer.parseInt(values[2]);
-        graph.getAdjList().get(startNode).put(endNode, new Edge(startNode, endNode, cost, false));
-        graph.getAdjList().get(endNode).put(startNode, new Edge(endNode, startNode, cost, false));
+        graph.getAdjList().get(startNode).add(new AdjListNode(endNode, new Edge(startNode, endNode, cost, false)));
+        graph.getAdjList().get(endNode).add(new AdjListNode(startNode, new Edge(endNode, startNode, cost, false)));
       }
       br.close();
     } catch(FileNotFoundException e){

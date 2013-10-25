@@ -1,10 +1,10 @@
 package ads.neeraj2608.mst.fheapscheme;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import ads.neeraj2608.mst.common.MSTGeneratorInterface;
+import ads.neeraj2608.types.common.AdjListNode;
 import ads.neeraj2608.types.common.Edge;
 import ads.neeraj2608.types.common.Graph;
 import ads.neeraj2608.types.fheapscheme.FHeap;
@@ -52,10 +52,10 @@ public class FHeapSchemeMSTGenerator implements MSTGeneratorInterface{
     while(fHeap.getSize() != 0){
       FHeapNode newestMSTNode = fHeap.deleteMin();
       startNodeIndex = newestMSTNode.getIndex();
-      HashMap<Integer, Edge> adjEdges = graph.getAdjList().get(startNodeIndex);
-      for(Integer nodeIndex : adjEdges.keySet()){
-        fHeap.decreaseKey(fHeap.getNodeList().get(nodeIndex), adjEdges.get(nodeIndex).getCost(),
-            startNodeIndex);
+      for(AdjListNode node: graph.getAdjList().get(startNodeIndex)){
+        int nodeIndex = node.getTargetNode();
+        int cost = node.getEdge().getCost();
+        fHeap.decreaseKey(fHeap.getNodeList().get(nodeIndex), cost, startNodeIndex);
       }
 
       generatedMST.add(new Edge(newestMSTNode.getPredecessor(), newestMSTNode.getIndex(),

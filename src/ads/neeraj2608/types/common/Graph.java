@@ -1,6 +1,5 @@
 package ads.neeraj2608.types.common;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,10 +12,10 @@ public class Graph{
   
   int numEdges;
   
-  List<HashMap<Integer, Edge>> adjList; // the adjacency list is a list of hashmaps. the key of the hashmap is the target node and the value is the edge to the target
-                                        // node from the index of adjList the hashmap is stored at. E.g.
-                                        // adjList[0].put(1, new Edge(0, 1, 100, false)) creates an edge from vertex 0 to vertex 1 with a cost of 100 that is not yet
-                                        // in the MST (indicated by the last argument = false)
+  List<List<AdjListNode>> adjList; // the adjacency list is a list of lists of objects of the AdjListNode class. The targetNode field of the object
+                                   // is the node that is being connected by the edge field of the same object. E.g.
+                                   // adjList[0].put(new AdjListNode(1, new Edge(0, 1, 100, false))) creates an edge from vertex 0 to vertex 1 with a
+                                   // cost of 100 that is not yet in the MST (indicated by the last argument to Edge = false)
   
   /**
    * Constructs a graph with the specified size and density
@@ -30,9 +29,9 @@ public class Graph{
     this.numVertices = numVertices;
     this.numEdges = (int) (density * numVertices * (numVertices - 1) / 2);
     
-    adjList = new LinkedList<HashMap<Integer, Edge>>();
+    adjList = new LinkedList<List<AdjListNode>>();
     for(int i=0;i<numVertices;i++){
-      adjList.add(i, new HashMap<Integer, Edge>());
+      adjList.add(i, new LinkedList<AdjListNode>());
     }
   }
   
@@ -49,7 +48,7 @@ public class Graph{
     return numVertices;
   }
 
-  public List<HashMap<Integer, Edge>> getAdjList(){
+  public List<List<AdjListNode>> getAdjList(){
     return adjList;
   }
 
@@ -57,7 +56,7 @@ public class Graph{
     return numEdges;
   }
 
-  public void setAdjList(List<HashMap<Integer, Edge>> adjList){
+  public void setAdjList(List<List<AdjListNode>> adjList){
     this.adjList = adjList;
   }
   
